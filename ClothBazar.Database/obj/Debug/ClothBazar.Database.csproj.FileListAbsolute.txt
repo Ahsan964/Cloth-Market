@@ -1,0 +1,14 @@
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.csprojResolveAssemblyReference.cache
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\ClothBazar.Database.dll.config
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\ClothBazar.Database.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\ClothBazar.Database.pdb
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\ClothBazar.Entities.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\EntityFramework.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\ClothBazar.Entities.pdb
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\EntityFramework.xml
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.pdb
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.Initialized.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.csproj.GenerateResource.Cache

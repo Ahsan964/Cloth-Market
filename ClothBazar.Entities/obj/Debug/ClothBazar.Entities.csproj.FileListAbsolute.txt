@@ -1,0 +1,5 @@
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Entities\bin\Debug\ClothBazar.Entities.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Entities\bin\Debug\ClothBazar.Entities.pdb
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Entities\obj\Debug\ClothBazar.Entities.dll
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Entities\obj\Debug\ClothBazar.Entities.pdb
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Entities\obj\Debug\ClothBazar.Entities.csprojResolveAssemblyReference.cache

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothBazar.Web", "ClothBazar.Web\ClothBazar.Web.csproj", "{C24A2C8D-A803-43AA-89C9-75DBAF0F0F18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothBazar.Entities", "ClothBazar.Entities\ClothBazar.Entities.csproj", "{FE9685BD-D61C-4590-8745-B4A1017D5650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothBazar.Database", "ClothBazar.Database\ClothBazar.Database.csproj", "{18467F03-08E5-4783-9A5F-A00EF4C3D16C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothBazar.Services", "ClothBazar.Services\ClothBazar.Services.csproj", "{1FBD21C4-F4F2-4E2C-96AF-D87A317DC190}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C24A2C8D-A803-43AA-89C9-75DBAF0F0F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24A2C8D-A803-43AA-89C9-75DBAF0F0F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24A2C8D-A803-43AA-89C9-75DBAF0F0F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24A2C8D-A803-43AA-89C9-75DBAF0F0F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9685BD-D61C-4590-8745-B4A1017D5650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9685BD-D61C-4590-8745-B4A1017D5650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9685BD-D61C-4590-8745-B4A1017D5650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9685BD-D61C-4590-8745-B4A1017D5650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18467F03-08E5-4783-9A5F-A00EF4C3D16C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18467F03-08E5-4783-9A5F-A00EF4C3D16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18467F03-08E5-4783-9A5F-A00EF4C3D16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18467F03-08E5-4783-9A5F-A00EF4C3D16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FBD21C4-F4F2-4E2C-96AF-D87A317DC190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FBD21C4-F4F2-4E2C-96AF-D87A317DC190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FBD21C4-F4F2-4E2C-96AF-D87A317DC190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FBD21C4-F4F2-4E2C-96AF-D87A317DC190}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
