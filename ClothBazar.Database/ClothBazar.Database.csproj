@@ -56,6 +56,14 @@
     <Compile Include="Migrations\202103291455169_Initialized.Designer.cs">
       <DependentUpon>202103291455169_Initialized.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104090953535_AddedImageURL.cs" />
+    <Compile Include="Migrations\202104090953535_AddedImageURL.Designer.cs">
+      <DependentUpon>202104090953535_AddedImageURL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104101145355_ImageURLProduct.cs" />
+    <Compile Include="Migrations\202104101145355_ImageURLProduct.Designer.cs">
+      <DependentUpon>202104101145355_ImageURLProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +80,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202103291455169_Initialized.resx">
       <DependentUpon>202103291455169_Initialized.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104090953535_AddedImageURL.resx">
+      <DependentUpon>202104090953535_AddedImageURL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104101145355_ImageURLProduct.resx">
+      <DependentUpon>202104101145355_ImageURLProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

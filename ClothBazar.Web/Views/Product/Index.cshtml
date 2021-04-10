@@ -105,6 +105,43 @@
 
         });
 
+        jQuery(document).ready(function () {
+            jQuery("#imageUpload").change(function () {
+                alert("change");
+                var element = this;
+
+                var formData = new FormData();
+
+                var totalFiles = element.files.length;
+
+                for (var i = 0; i < totalFiles; i++) {
+                    var file = element.files[i];
+                    formData.append("Photo", file);
+                }
+
+                jQuery.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("UploadImage", "Shared")',
+                        dataType: 'json',
+                        data: formData,
+                        contentType: false,
+                        processData: false
+                    })
+                    .done(function (response) {
+                        console.log(response);
+
+                        if (response.Success) {
+                            jQuery("#ImageURL").val(response.ImageURL);
+                            jQuery("#productImage").attr("src", response.ImageURL);
+                        }
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+            });
+
+        });
+
         jQuery(document).ready(function() {
             jQuery('.edit-new-btn').on('click',
                 function (e) {

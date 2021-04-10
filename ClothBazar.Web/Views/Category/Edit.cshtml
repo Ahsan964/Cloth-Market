@@ -8,6 +8,7 @@
 <form method="post">
     <div class="form-group">
         <input type="hidden" name="ID" value="@Model.ID"/>
+
         <label>Name</label>
         <input name="Name" value="@Model.Name"/>
         <br/>
@@ -15,7 +16,52 @@
         <label>Description</label>
         <input name="Description" value="@Model.Description"/>
         <br/>
+        
+        <label>Image</label>
+        <input type="hidden" id="ImageURL" name="ImageURL" />
+        <input id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png"/>
+        <br />
+
+        <div class="thumb">
+            <img class="img-thumbnail img-fluid" id="categoryImage" />
+        </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </form>
+
+
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UploadImage", "Shared")',
+                dataType: 'json',
+                data: formData,
+                contentType: false,
+                processData: false
+            })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#categoryImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+</script>
