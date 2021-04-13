@@ -14,3 +14,4 @@ C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Datab
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.csproj.GenerateResource.Cache
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.AddedImageURL.resources
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.ImageURLProduct.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.AddedIsFeatured.resources

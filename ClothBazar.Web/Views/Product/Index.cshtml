@@ -2,39 +2,47 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="container">
+    <div id="ProductContainer">
 
-<div id="ProductContainer">
-    <div>
+        
         <form id="searchForm" method="POST">
-            <input id="searchTxt" name="search"/>
-            <button type="button" id="searchBtn">Search</button>
+            <div class="input-group">
+                
+                <input class="form-control" id="searchTxt" name="search" />
+            <div class="input-group-append">
+                
+                <button type="button" id="searchBtn">Search</button>
+                <button type="button" class="btn btn-primary create-new-btn">New</button>
+            </div>
+            </div>
         </form>
-        <button type="button" class="btn btn-primary create-new-btn">Create New</button>
+
     </div>
     <div class="ProductTable">
         @{
             Html.RenderAction("ProductTable");
         }
     </div>
-</div>
+
 
 <div id="actionContainer" style="display: none">
     @{
         Html.RenderAction("Create");
-        
+
     }
 </div>
 
-<div id="editContainer" >
+<div id="editContainer">
     @{
     }
 </div>
-
+</div>
 @section scripts
 {
     <script>
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
 
 
             jQuery('.create-new-btn').on('click',
@@ -64,10 +72,10 @@
                     });
                 });
 
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function () {
                 jQuery("#searchForm").on('click',
                     '#searchBtn',
-                    function(e) {
+                    function (e) {
                         e.preventDefault();
                         var searchValue = jQuery("#searchTxt").val();
                         jQuery.ajax({
@@ -76,29 +84,30 @@
                             data: {
                                 search: searchValue
                             },
-                            beforeSend: function(xhr) {},
-                            success: function(response, statusText, xhr) {
+                            beforeSend: function (xhr) { },
+                            success: function (response, statusText, xhr) {
                                 // console.log(xhr, response, statusText);
                                 jQuery(".ProductTable").html(response);
                             },
-                            complete: function(xhr, response, statusText) {},
-                            error: function(xhr, errors) {}
+                            complete: function (xhr, response, statusText) { },
+                            error: function (xhr, errors) { }
                         });
                     });
             });
 
 
-            jQuery("#saveBtn").click(function(e) {
+            jQuery("#saveBtn").click(function (e) {
 
                 jQuery.ajax({
-                        type: 'POST',
-                        url: '/Product/Create',
-                        data: jQuery("#createProduct").serialize()
-                    })
-                    .done(function(response) {
+                    type: 'POST',
+                    url: '/Product/Create',
+                    data: jQuery("#createProduct").serialize()
+                })
+                    .done(function (response) {
                         jQuery(".ProductTable").html(response);
+
                     })
-                    .fail(function() {
+                    .fail(function () {
                         alert("Fail");
                     });
             });
@@ -120,13 +129,13 @@
                 }
 
                 jQuery.ajax({
-                        type: 'POST',
-                        url: '@Url.Action("UploadImage", "Shared")',
-                        dataType: 'json',
-                        data: formData,
-                        contentType: false,
-                        processData: false
-                    })
+                    type: 'POST',
+                    url: '@Url.Action("UploadImage", "Shared")',
+                    dataType: 'json',
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                })
                     .done(function (response) {
                         console.log(response);
 
@@ -142,7 +151,7 @@
 
         });
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             jQuery('.edit-new-btn').on('click',
                 function (e) {
                     e.preventDefault();

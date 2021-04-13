@@ -1,4 +1,6 @@
-﻿@{
+﻿@using ClothBazar.Services
+@model List<Category>
+@{
     ViewBag.Title = "Create";
 }
 
@@ -6,29 +8,35 @@
     <h2>Create Product</h2>
     <form id="createProduct">
         <div class="form-group">
+
             <label>Name</label>
-            <input name="Name" />
-            <br />
-            
+            <input class="form-control" name="Name"/>
+            <br/>
+
             <label>Description</label>
-            <input name="Description" />
-            <br />
+            <input class="form-control" name="Description"/>
+            <br/>
 
             <label>Category</label>
-            <input name="Category"/>
-            <br />
-        
+            <select name="CategoryID">
+                @foreach(var categories in Model)
+                { 
+                    <option value="@categories.ID">@categories.Name</option>
+                }
+            </select>
+            <br/>
+
             <label>Price</label>
-            <input name="Price"/>
-            <br />
+            <input class="form-control" name="Price"/>
+            <br/>
 
             <label>Image</label>
-            <input type="hidden" id="ImageURL" name="ImageURL" />
-            <input id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png"/>
-            <br />
-        
+            <input type="hidden" id="ImageURL" name="ImageURL"/>
+            <input class="form-control" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png"/>
+            <br/>
+
             <div class="thumb">
-                <img class="img-thumbnail img-fluid" id="productImage" />
+                <img class="img-thumbnail img-fluid" id="productImage"/>
             </div>
 
             <button id="saveBtn" type="button" class="btn btn-primary">Save</button>

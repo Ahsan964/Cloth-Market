@@ -2,31 +2,43 @@
 
 @{
     ViewBag.Title = "Edit";
+
+    var trueChecked = Model.IsFeatured ? "checked" : string.Empty;
+    var falseChecked = !Model.IsFeatured ? "checked" : string.Empty;
 }
 
-<h2>Edit Category</h2>
+
 <form method="post">
-    <div class="form-group">
-        <input type="hidden" name="ID" value="@Model.ID"/>
+    <div class="container">
+        <div class="form-group">
+            <h2>Edit Category</h2>
 
-        <label>Name</label>
-        <input name="Name" value="@Model.Name"/>
-        <br/>
+            <input type="hidden" name="ID" value="@Model.ID"/>
 
-        <label>Description</label>
-        <input name="Description" value="@Model.Description"/>
-        <br/>
-        
-        <label>Image</label>
-        <input type="hidden" id="ImageURL" name="ImageURL" />
-        <input id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png"/>
-        <br />
+            <label>Name</label>
+            <input class="form-control" name="Name" value="@Model.Name"/>
+            <br/>
 
-        <div class="thumb">
-            <img class="img-thumbnail img-fluid" id="categoryImage" />
+            <label>Description</label>
+            <input class="form-control" name="Description" value="@Model.Description"/>
+            <br/>
+            
+            <label>Is Featured?</label>
+            <input class="form-control" name="IsFeatured" type="radio" value="True" @trueChecked /> True
+            <input class="form-control" name="IsFeatured" type="radio" value="False" @falseChecked /> False
+            <br />
+
+            <label>Image</label>
+            <input type="hidden" id="ImageURL" name="ImageURL"/>
+            <input class="form-control" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png" value="@Model.ImageURL"/>
+            <br/>
+
+            <div class="thumb">
+                <img class="img-thumbnail img-fluid" id="categoryImage"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
         </div>
-
-        <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </form>
 

@@ -15,6 +15,7 @@ namespace ClothBazar.Services
         {
             using (var context = new CBContext())
             {
+                context.Entry(product.Category).State = EntityState.Unchanged;
                 context.Products.Add(product);
                 context.SaveChanges();
             }
@@ -24,7 +25,7 @@ namespace ClothBazar.Services
         {
             using (var context = new CBContext())
             {
-                return context.Products.ToList();
+                return context.Products.Include(c => c.Category).ToList();
             }
         }
 

@@ -1,10 +1,11 @@
-﻿@model List<Product>
+﻿
+@model List<Product>
 @{
     ViewBag.Title = "ProductTable";
 }
 
 <div>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Product Name</th>
@@ -19,7 +20,16 @@
         {
             <tr>
                 <td>@product.Name</td>
-                <td>-</td>
+                <td>
+                    @if (product.Category != null)
+                    {
+                        <text>@product.Category.Name</text>
+                    }
+                    else
+                    {
+                        <text>-</text>
+                    }
+                </td>
                 <td>@product.Price</td>
                 <td>
                     <button type="button" id="editBtn" class="edit-new-btn" data-id="@product.ID">Edit</button>
