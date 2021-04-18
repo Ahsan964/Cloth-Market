@@ -5,13 +5,13 @@
 }
 
 <div>
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th class="font-weight-bold">Product Name</th>
+                <th class="font-weight-bold">Category</th>
+                <th class="font-weight-bold">Price</th>
+                <th class="font-weight-bold">Actions</th>
             </tr>
         </thead>
 
@@ -31,7 +31,7 @@
                     }
                 </td>
                 <td>@product.Price</td>
-                <td>
+                <td class="wrap-td">
                     <button type="button" id="editBtn" class="edit-new-btn" data-id="@product.ID">Edit</button>
                     <button type="button" id="deleteBtn" class="delete-btn" data-id="@product.ID">Delete</button>
                 </td>

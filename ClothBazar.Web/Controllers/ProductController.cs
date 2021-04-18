@@ -42,14 +42,15 @@ namespace ClothBazar.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var categories = categoriesService.GetCategories();
-            return PartialView(categories);
+            NewProductViewModel model = new NewProductViewModel();
+            model.AvailableCategories = categoriesService.GetAllCategories();
+            return PartialView(model);
         }
 
 
 
         [HttpPost]
-        public ActionResult Create(NewCategoryViewModel model)
+        public ActionResult Create(NewProductViewModel model)
         {
             var newProduct = new Product();
             newProduct.Name = model.Name;
@@ -66,14 +67,41 @@ namespace ClothBazar.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int ID)
         {
+            EditProductViewModel model = new EditProductViewModel();
             var product = productsService.GetProduct(ID);
-            return PartialView(product);
+
+            model.ID = product.ID;
+            model.Name = product.Name;
+            model.Description = product.Description;
+            model.Price = product.Price;
+            
+            model.CategoryID = product.Category != null ? product.Category.ID : 0;
+            model.ImageURL = product.ImageURL;
+
+            model.AvailableCategories = categoriesService.GetAllCategories();
+
+            return PartialView(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(EditProductViewModel model)
         {
-            productsService.UpdateProduct(product);
+            var existingProduct = productsService.GetProduct(model.ID);
+            existingProduct.Name = model.Name;
+            existingProduct.Description = model.Description;
+            existingProduct.Price = model.Price;
+
+            existingProduct.Category = null; //mark it null. Because the referncy key is changed below
+            existingProduct.CategoryID = model.CategoryID;
+
+            //dont update imageURL if its empty
+            if (!string.IsNullOrEmpty(model.ImageURL))
+            {
+                existingProduct.ImageURL = model.ImageURL;
+            }
+
+            productsService.UpdateProduct(existingProduct);
+
             return RedirectToAction("ProductTable");
         }
 

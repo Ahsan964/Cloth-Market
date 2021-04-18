@@ -1,79 +1,120 @@
-﻿@model ClothBazar.Entities.Category
+﻿@model ClothBazar.Web.ViewModels.EditCategoryViewModel
 
 @{
     ViewBag.Title = "Edit";
 
-    var trueChecked = Model.IsFeatured ? "checked" : string.Empty;
-    var falseChecked = !Model.IsFeatured ? "checked" : string.Empty;
+    var trueChecked = Model.isFeatured ? "checked" : string.Empty;
+    var falseChecked = !Model.isFeatured ? "checked" : string.Empty;
+
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/pattern/placeholder.png";
 }
 
 
-<form method="post">
-    <div class="container">
-        <div class="form-group">
-            <h2>Edit Category</h2>
-
-            <input type="hidden" name="ID" value="@Model.ID"/>
-
-            <label>Name</label>
-            <input class="form-control" name="Name" value="@Model.Name"/>
-            <br/>
-
-            <label>Description</label>
-            <input class="form-control" name="Description" value="@Model.Description"/>
-            <br/>
+<form id="editCategory">
+    <input type="hidden" name="ID" value="@Model.ID"/>
+    <h2>Edit Category</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" name="Name" value="@Model.Name"/>
+            </div>
             
-            <label>Is Featured?</label>
-            <input class="form-control" name="IsFeatured" type="radio" value="True" @trueChecked /> True
-            <input class="form-control" name="IsFeatured" type="radio" value="False" @falseChecked /> False
-            <br />
-
-            <label>Image</label>
-            <input type="hidden" id="ImageURL" name="ImageURL"/>
-            <input class="form-control" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png" value="@Model.ImageURL"/>
-            <br/>
-
-            <div class="thumb">
-                <img class="img-thumbnail img-fluid" id="categoryImage"/>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" name="Description" value="@Model.Description" />
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group">
+                <label>Image</label>
+                <input type="hidden" class="image-url" id="ImageURL" name="ImageURL" value="@Model.ImageURL" />
+                <input class="form-control image-upload" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png" />
+            </div>
+            
+            <div class="form-group">
+                <label>Is Featured?</label>
+                <div class="input-group">
+                    <div class="radio form-control">
+                        <label> <input class="form-control" name="isFeatured" type="radio" value="True" @trueChecked /> True </label>
+                    </div>
+                    <div class="radio form-control">
+                        <label> <input class="form-control" name="isFeatured" type="radio" value="False" @falseChecked /> False </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="thumb">
+                <img src="@imageURL" class="img-thumbnail img-fluid" id="categoryImage" />
+            </div>
         </div>
     </div>
+
+            <button id="updateBtn" type="button" class="btn btn-primary">Update</button>
+            <button id="cancelBtn" type="button" class="btn btn-primary cancel-btn">Cancel</button>
+        
 </form>
 
+    <script>
+        $(".image-upload").change(function () {
+            alert("change");
+            var element = this;
 
-<script>
-    $("#imageUpload").change(function () {
-        var element = this;
+            var formData = new FormData();
 
-        var formData = new FormData();
+            var totalFiles = element.files.length;
 
-        var totalFiles = element.files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = element.files[i];
+                formData.append("Photo", file);
+            }
 
-        for (var i = 0; i < totalFiles; i++) {
-            var file = element.files[i];
-            formData.append("Photo", file);
-        }
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("UploadImage", "Shared")',
+                    dataType: 'json',
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                })
+                .done(function (response) {
+                    console.log(response);
 
-        $.ajax({
-                type: 'POST',
-                url: '@Url.Action("UploadImage", "Shared")',
-                dataType: 'json',
-                data: formData,
-                contentType: false,
-                processData: false
-            })
-            .done(function (response) {
-                console.log(response);
+                    if (response.Success) {
+                        $(".image-url").val(response.ImageURL);
+                        $("#categoryImage").attr("src", response.ImageURL);
+                    }
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+                });
+        });
 
-                if (response.Success) {
-                    $("#ImageURL").val(response.ImageURL);
-                    $("#categoryImage").attr("src", response.ImageURL);
-                }
-            })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("FAIL");
+
+        //Update button
+        $("#updateBtn").on("click",
+            function() {
+                $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Edit", "Category")',
+                        data: $("#editCategory").serialize()
+                    })
+                    .done(function(response) {
+                        $(".tableContainer").html(response);
+                        $("#editContainer").html("");
+                        focusAction("tableContainer");
+
+                    })
+                    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
             });
-    });
-</script>
+
+        //Cancel button
+        jQuery(".cancel-btn").on("click",
+            function() {
+                jQuery("#editContainer").html("");
+
+            });
+    </script>

@@ -1,71 +1,94 @@
 ﻿@model ClothBazar.Web.ViewModels.EditProductViewModel
 @{
     ViewBag.Title = "Edit";
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/pattern/placeholder.png";
 }
 
 <div class="action-form">
     <form id="editProduct">
         <h2>Edit Product</h2>
-        <div class="form-group">
-            <input type="hidden" name="ID" value="@Model.ID"/>
+        <input type="hidden" name="ID" value="@Model.ID" />
 
-            <label>Name</label>
-            <input class="form-control" name="Name" value="@Model.Name"/>
-            <br/>
+        <div class="row">
+            <div class="col-md-8">
 
-            <label>Description</label>
-            <input class="form-control" name="Description" value="@Model.Description"/>
-            <br/>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" name="CategoryID">
+                        @foreach (var category in Model.AvailableCategories)
+                        {
+                            var selected = category.ID == Model.CategoryID ? "selected" : string.Empty;
+                            <option value="@category.ID" @selected>@category.Name</option>
+                        }
+                    </select>
+                </div>
 
-            @*<label>Category</label>
-            <select name="CategoryID">
-                @foreach(var categories in Model)
-                { 
-                    <option value=""></option>
-                }
-            </select>
-            <br/>*@
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" name="Name" value="@Model.Name" />
+                </div>
 
-            <label>Price</label>
-            <input class="form-control" name="Price" value="@Model.Price"/>
-            <br/>
-            
-            <label>Image</label>
-            <input type="hidden" id="ImageURL" name="ImageURL" />
-            <input class="form-control" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png" />
-            <br />
+                <div class="form-group">
+                    <label>Description</label>
+                    <input class="form-control" name="Description" value="@Model.Description" />
+                </div>
 
-            <div class="thumb">
-                <img class="img-thumbnail img-fluid" id="productImage" />
+                <div class="form-group">
+                    <label>Price</label>
+                    <input class="form-control" name="Price" value="@Model.Price" />
+                </div>
+
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="hidden" class="image-url" id="ImageURL" name="ImageURL" />
+                    <input class="form-control image-upload" id="imageUpload" name="Image" type="file" accept=".jpg, .jpeg, .png" />
+                </div>
+
+                <button id="updateBtn" type="button" class="btn btn-primary update-btn">Update</button>
+                <button id="cancelBtn" type="button" class="btn btn-primary Cancel-Btn">Cancel</button>
+
             </div>
 
-
-            <button id="updateBtn" type="button" class="btn btn-primary update-btn">Update</button>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <img class="img-thumbnail img-fluid" id="productImage" src="@imageURL" />
+                </div>
+            </div>
         </div>
-    </form>
+
+</form>
 </div>
 <script>
+    // Update button
     jQuery(document).ready(function() {
 
-    jQuery(".update-btn").click(function (e) {
-        e.preventDefault();
-        jQuery.ajax({
-                type: 'POST',
-                url: '/Product/Edit',
-                data: jQuery("#editProduct").serialize()
-            })
-            .done(function (response) {
-                jQuery(".ProductTable").html(response);
-                jQuery("#editProduct").hide();
-            })
-            .fail(function () {
-                alert("Fail");
-            });
-    });
+        jQuery(".update-btn").click(function (e) {
+            e.preventDefault();
+            jQuery.ajax({
+                    type: 'POST',
+                    url: '/Product/Edit',
+                    data: jQuery("#editProduct").serialize()
+                })
+                .done(function (response) {
+                    jQuery(".ProductTable").html(response);
+                    jQuery("#editProduct").hide();
+                })
+                .fail(function () {
+                    alert("Fail");
+                });
+        });
 
     });
+
+    // Cancel button
+    jQuery(".Cancel-Btn").click(function () {
+        jQuery("#editContainer").html("");
+        
+    });
+
+    // Image Upload
     jQuery(document).ready(function () {
-        jQuery("#imageUpload").change(function () {
+        jQuery(".image-upload").change(function () {
             alert("change");
             var element = this;
 
@@ -90,7 +113,7 @@
                     console.log(response);
 
                     if (response.Success) {
-                        jQuery("#ImageURL").val(response.ImageURL);
+                        jQuery(".image-url").val(response.ImageURL);
                         jQuery("#productImage").attr("src", response.ImageURL);
                     }
                 })

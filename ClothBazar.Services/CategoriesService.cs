@@ -11,6 +11,7 @@ namespace ClothBazar.Services
 {
     public class CategoriesService
     {
+
         public void SaveCategory(Category category)
         {
             using (var context = new CBContext())
@@ -20,11 +21,35 @@ namespace ClothBazar.Services
             }
         }
 
-        public List<Category> GetCategories()
+        public List<Category> GetCategories(string search)
         {
             using (var context = new CBContext())
             {
-                return context.Categories.ToList();
+                if (!string.IsNullOrEmpty(search))
+                {
+                    return context.Categories.Where(category => category.Name != null &&
+                                                                category.Name.ToLower().Contains(search.ToLower()))
+                        .OrderBy(x => x.ID)
+                        .Include(x => x.Products)
+                        .ToList();
+                }
+                else
+                {
+                    return context.Categories
+                        .OrderBy(x => x.ID)
+                        .Include(x => x.Products)
+                        .ToList();
+                }
+            }
+        }
+
+        // Available Categories
+        public List<Category> GetAllCategories()
+        {
+            using (var context = new CBContext())
+            {
+                return context.Categories
+                    .ToList();
             }
         }
 
@@ -58,7 +83,9 @@ namespace ClothBazar.Services
         {
             using (var context = new CBContext())
             {
-                var category = context.Categories.Find(ID);
+                var category = context.Categories.Where(x => x.ID == ID).Include(x => x.Products).FirstOrDefault();
+
+                context.Products.RemoveRange(category.Products); //first delete products of this category
                 context.Categories.Remove(category);
                 context.SaveChanges();
             }

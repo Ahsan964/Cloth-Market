@@ -2,81 +2,87 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="container">
-    <div id="ProductContainer">
-
-        
-        <form id="searchForm" method="POST">
-            <div class="input-group">
-                
-                <input class="form-control" id="searchTxt" name="search" />
-            <div class="input-group-append">
-                
-                <button type="button" id="searchBtn">Search</button>
-                <button type="button" class="btn btn-primary create-new-btn">New</button>
+<section class="flat-row flat-iconbox">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section">
+                    <h2 class="title">
+                        Products
+                    </h2>
+                </div>
             </div>
-            </div>
-        </form>
+        </div>
 
+        <div id="ProductContainer">
+            <form id="searchForm" method="POST">
+                <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input class="form-control" id="searchTxt" name="search" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                <div class="form-group">
+                <label>Action</label>
+                <div class="row">
+                <div class="col-md-4 pr-0">
+                    <button class="btn btn-primary" type="button" id="searchBtn">Search</button>
+                </div>
+            
+                <div class="col-md-4 pr-0">
+                    <button type="button" class="btn btn-primary create-new-btn">New</button>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+            </form>
+            <div class="ProductTable">
+            @{
+                Html.RenderAction("ProductTable");
+            }
+        </div>
+
+
+        <div id="actionContainer" style="display: none">
+            @{
+                Html.RenderAction("Create");
+            }
+        </div>
+
+        <div id="editContainer">
+            @{
+            }
+        </div>
     </div>
-    <div class="ProductTable">
-        @{
-            Html.RenderAction("ProductTable");
-        }
-    </div>
+</section>
 
-
-<div id="actionContainer" style="display: none">
-    @{
-        Html.RenderAction("Create");
-
-    }
-</div>
-
-<div id="editContainer">
-    @{
-    }
-</div>
-</div>
 @section scripts
 {
-    <script>
-
-        jQuery(document).ready(function () {
-
-
-            jQuery('.create-new-btn').on('click',
-                function (e) {
-                    e.preventDefault();
-                    jQuery('#actionContainer').toggle();
-                });
-
-            jQuery("#searchForm").on('keypress',
-                '#searchTxt',
-                function (e) {
-                    // e.preventDefault();
-                    var searchValue = jQuery("#searchTxt").val();
-                    jQuery.ajax({
-                        url: '/Product/ProductTable',
-                        method: 'POST',
-                        data: {
-                            search: searchValue
-                        },
-                        beforeSend: function (xhr) { },
-                        success: function (response, statusText, xhr) {
-                            // console.log(xhr, response, statusText);
-                            jQuery(".ProductTable").html(response);
-                        },
-                        complete: function (xhr, response, statusText) { },
-                        error: function (xhr, errors) { }
-                    });
-                });
+        <script>
+            function focusAction(controlToFocus) {
+                $('html, body').animate({
+                    scrollTop: $("#" + controlToFocus).offset().top - 100
+                }, 1000);
+            }
 
             jQuery(document).ready(function () {
-                jQuery("#searchForm").on('click',
-                    '#searchBtn',
+
+
+                jQuery('.create-new-btn').on('click',
                     function (e) {
                         e.preventDefault();
+                        jQuery('#actionContainer').toggle();
+                        focusAction("actionContainer");
+                    });
+
+                jQuery("#searchForm").on('keypress',
+                    '#searchTxt',
+                    function (e) {
+                        // e.preventDefault();
                         var searchValue = jQuery("#searchTxt").val();
                         jQuery.ajax({
                             url: '/Product/ProductTable',
@@ -93,113 +99,137 @@
                             error: function (xhr, errors) { }
                         });
                     });
-            });
+
+                jQuery(document).ready(function () {
+                    jQuery("#searchForm").on('click',
+                        '#searchBtn',
+                        function (e) {
+                            e.preventDefault();
+                            var searchValue = jQuery("#searchTxt").val();
+                            jQuery.ajax({
+                                url: '/Product/ProductTable',
+                                method: 'POST',
+                                data: {
+                                    search: searchValue
+                                },
+                                beforeSend: function (xhr) { },
+                                success: function (response, statusText, xhr) {
+                                    // console.log(xhr, response, statusText);
+                                    jQuery(".ProductTable").html(response);
+                                },
+                                complete: function (xhr, response, statusText) { },
+                                error: function (xhr, errors) { }
+                            });
+                        });
+                });
 
 
-            jQuery("#saveBtn").click(function (e) {
-
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '/Product/Create',
-                    data: jQuery("#createProduct").serialize()
-                })
-                    .done(function (response) {
-                        jQuery(".ProductTable").html(response);
-
-                    })
-                    .fail(function () {
-                        alert("Fail");
-                    });
-            });
-
-        });
-
-        jQuery(document).ready(function () {
-            jQuery("#imageUpload").change(function () {
-                alert("change");
-                var element = this;
-
-                var formData = new FormData();
-
-                var totalFiles = element.files.length;
-
-                for (var i = 0; i < totalFiles; i++) {
-                    var file = element.files[i];
-                    formData.append("Photo", file);
-                }
-
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("UploadImage", "Shared")',
-                    dataType: 'json',
-                    data: formData,
-                    contentType: false,
-                    processData: false
-                })
-                    .done(function (response) {
-                        console.log(response);
-
-                        if (response.Success) {
-                            jQuery("#ImageURL").val(response.ImageURL);
-                            jQuery("#productImage").attr("src", response.ImageURL);
-                        }
-                    })
-                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("FAIL");
-                    });
-            });
-
-        });
-
-        jQuery(document).ready(function () {
-            jQuery('.edit-new-btn').on('click',
-                function (e) {
-                    e.preventDefault();
+                jQuery("#saveBtn").click(function (e) {
 
                     jQuery.ajax({
-                        url: '/Product/Edit',
-                        data: {
-                            ID: jQuery(this).attr('data-id')
-                        },
-                        beforeSend: function (xhr) { },
-                        success: function (response, statusText, xhr) {
-                            // console.log(xhr, response, statusText);
-                            jQuery("#editContainer").html(response);
-                        },
-                        complete: function (xhr, response, statusText) { },
-                        error: function (xhr, errors) { }
-                    });
+                        type: 'POST',
+                        url: '/Product/Create',
+                        data: jQuery("#createProduct").serialize()
+                    })
+                        .done(function (response) {
+                            jQuery(".ProductTable").html(response);
+                            focusAction("ProductTable");
 
-
+                        })
+                        .fail(function () {
+                            alert("Fail");
+                        });
                 });
-        });
 
-        jQuery(document).ready(function () {
-            jQuery('.delete-btn').on('click',
-                function (e) {
-                    e.preventDefault();
-                    var confirmDelete = confirm("Are you sure?");
-                    if (confirmDelete) {
+            });
+
+            jQuery(document).ready(function () {
+                jQuery("#imageUpload").change(function () {
+                    alert("change");
+                    var element = this;
+
+                    var formData = new FormData();
+
+                    var totalFiles = element.files.length;
+
+                    for (var i = 0; i < totalFiles; i++) {
+                        var file = element.files[i];
+                        formData.append("Photo", file);
+                    }
+
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("UploadImage", "Shared")',
+                        dataType: 'json',
+                        data: formData,
+                        contentType: false,
+                        processData: false
+                    })
+                        .done(function (response) {
+                            console.log(response);
+
+                            if (response.Success) {
+                                jQuery("#ImageURL").val(response.ImageURL);
+                                jQuery("#productImage").attr("src", response.ImageURL);
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("FAIL");
+                        });
+                });
+
+            });
+
+            jQuery(document).ready(function () {
+                jQuery('.edit-new-btn').on('click',
+                    function (e) {
+                        e.preventDefault();
+
                         jQuery.ajax({
-                            type: 'POST',
-                            url: '/Product/Delete',
+                            url: '/Product/Edit',
                             data: {
                                 ID: jQuery(this).attr('data-id')
                             },
                             beforeSend: function (xhr) { },
                             success: function (response, statusText, xhr) {
                                 // console.log(xhr, response, statusText);
-                                jQuery(".ProductTable").html(response);
+                                jQuery("#editContainer").html(response);
+                                focusAction("editContainer");
                             },
                             complete: function (xhr, response, statusText) { },
-                            error: function (xhr, errors) { }
+                            error: function (xhr, errors) { alert("fail"); }
                         });
-                    }
-                });
-        });
 
 
-    </script>
-}
+                    });
+            });
+
+            jQuery(document).ready(function () {
+                jQuery('.delete-btn').on('click',
+                    function (e) {
+                        e.preventDefault();
+                        var confirmDelete = confirm("Are you sure?");
+                        if (confirmDelete) {
+                            jQuery.ajax({
+                                type: 'POST',
+                                url: '/Product/Delete',
+                                data: {
+                                    ID: jQuery(this).attr('data-id')
+                                },
+                                beforeSend: function (xhr) { },
+                                success: function (response, statusText, xhr) {
+                                    // console.log(xhr, response, statusText);
+                                    jQuery(".ProductTable").html(response);
+                                },
+                                complete: function (xhr, response, statusText) { },
+                                error: function (xhr, errors) { }
+                            });
+                        }
+                    });
+            });
+
+
+        </script>
+    }
 
 

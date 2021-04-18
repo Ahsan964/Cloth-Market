@@ -1,0 +1,39 @@
+﻿@model ClothBazar.Web.ViewModels.CategorySearchViewModel
+@{
+    ViewBag.Title = "CategoryTable";
+}
+
+<table id="categoryTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+    <tr>
+        <th class="font-weight-bold">Category Name</th>
+        <th class="font-weight-bold">Products</th>
+        <th class="font-weight-bold">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Categories != null && Model.Categories.Count > 0)
+    {
+        foreach (var category in Model.Categories)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>
+               @*     @category.Products.Count*@
+                </td>
+                <td class="wrap-td">
+                    <button class="edit-new-btn" data-id="@category.ID">Edit</button>
+                    <button class="deleteBtn" data-id="@category.ID">Delete</button>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        
+    </script>
+}

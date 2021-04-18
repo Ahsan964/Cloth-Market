@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ClothBazar.Services;
+using System.Data.Entity;
 using ClothBazar.Web.ViewModels;
 
 namespace ClothBazar.Web.Controllers
