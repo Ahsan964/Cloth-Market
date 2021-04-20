@@ -1,0 +1,53 @@
+﻿@model Config
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<div>
+    <form id="configForm" class="config-form">
+        
+        <input type="hidden" name="Key" class="key" value="@Model.Key" />
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Value</label>
+                    <input type="text" name="Value" class="form-control" value="@Model.Value" />
+                </div>
+            </div>
+        </div>
+                <button type="button" id="updatebtn" class="btn btn-primary config-update-btn">Update</button>
+                <button type="button" id="cancelbtn" class="btn btn-primary config-cancel-btn">Cancel</button>
+
+    </form>
+</div>
+
+<script>
+    jQuery(document).ready(function() {
+        //Update button
+        $(".config-update-btn").on("click",
+            function () {
+                $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Edit", "Configuration")',
+                    data: $(".config-form").serialize()
+                    })
+                    .done(function (response) {
+                        $(".configTable").html(response);
+                        $(".config-editContainer").html("");
+                        focusAction("configTable");
+
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+            });
+    });
+
+    // Cancel Button
+    jQuery(".config-cancel-btn").on("click",
+        function () {
+            jQuery(".config-editContainer").html("");
+
+        });
+</script>

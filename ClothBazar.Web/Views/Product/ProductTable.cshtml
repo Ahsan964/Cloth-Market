@@ -34,52 +34,24 @@
                 <td class="wrap-td">
                     <button type="button" id="editBtn" class="edit-new-btn" data-id="@product.ID">Edit</button>
                     <button type="button" id="deleteBtn" class="delete-btn" data-id="@product.ID">Delete</button>
+                    <button type="button" id="addtocartBtn" class="addtocart-btn" data-id="@product.ID">Add To Cart</button>
                 </td>
             </tr>
         }
         </tbody>
     </table>
 </div>
-@section scripts
-{
-    <script>
-
-        jQuery(document).ready(function() {
-
-          
-
-            /*$("#searchBtn").click(function() {
-                var searchValue = $("#searchTxt").val();
-                $.ajax({
-                        method: 'POST',
-                        url: '/Product/ProductTable',
-                        data: {
-                            search: searchValue
-                        }
-                    })
-                    .done(function(response) {
-                        $("#ProductContainer").html(response);
-                    })
-                    .fail(function() {
-                        alert("Fail");
-                    });
-
-            });*/
 
 
-            /*$("#newBtn").click(function() {
-                $.ajax({
-                        type: 'GET',
-                        url: '/Product/Create',
-                    })
-                    .done(function(response) {
-                        $("#actionContainer").html(response);
-                    })
-                    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Fail");
-                    });
-
-            });*/
-        });
-    </script>
-}
+<script>
+    jQuery(document).ready(function () {
+        var products = [];
+        jQuery(".addtocart-btn").on("click",
+            function () {
+                var productID = jQuery(this).attr('data-id');
+                products.push(productID);
+                jQuery.cookie("CartProducts", products.join('-'), { path: '/' });
+                alert("Added");
+            });
+    });
+</script>

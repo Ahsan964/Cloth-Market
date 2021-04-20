@@ -21,6 +21,7 @@ namespace ClothBazar.Services
             }
         }
 
+        //All Products
         public List<Product> GetProducts()
         {
             using (var context = new CBContext())
@@ -29,6 +30,16 @@ namespace ClothBazar.Services
             }
         }
 
+        // All Cart Products
+        public List<Product> GetProducts(List<int> IDs)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.Where(c => IDs.Contains(c.ID)).ToList();
+            }
+        }
+
+        // Single Product
         public Product GetProduct(int ID)
         {
             using (var context = new CBContext())

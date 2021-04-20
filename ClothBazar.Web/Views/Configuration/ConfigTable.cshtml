@@ -1,0 +1,89 @@
+﻿@model List<Config>
+@{
+    ViewBag.Title = "ConfigTable";
+}
+
+    <table class="table table-striped table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th class="font-weight-bold">Name</th>
+            <th class="font-weight-bold">Links</th>
+            <th class="font-weight-bold">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+            @foreach (var config in Model)
+            {
+                <tr>
+                    <td>@config.Key</td>
+                    <td>@config.Value</td>
+                    <td>
+                        <button type="button" data-id="@config.Key" class="config-edit-btn">Edit</button>
+                        <button type="button" data-id="@config.Key" class="config-delete-btn">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery(".config-delete-btn").on("click", function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("Delete", "Configuration")',
+                            data: {
+                                Key: jQuery(this).attr('data-id')
+                            }
+                        })
+                        .done(function (response) {
+                            jQuery(".configTable").html(response);
+
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("FAIL");
+                        });
+
+                }
+            });
+        });
+
+        //Edit
+        jQuery('.config-edit-btn').on('click',
+            function (e) {
+                e.preventDefault();
+                jQuery.ajax({
+                    url: '/Configuration/Edit',
+                    data: {
+                        Key: jQuery(this).attr('data-id')
+                    },
+                    beforeSend: function (xhr) { },
+                    success: function (response, statusText, xhr) {
+                        // console.log(xhr, response, statusText);
+                        jQuery(".config-editContainer").html(response);
+                        focusAction("config-editContainer");
+                    },
+                    complete: function (xhr, response, statusText) { },
+                    error: function (xhr, errors) { }
+                });
+            });
+    });
+</script>

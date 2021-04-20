@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Configuration</h2>
+<div>
+    <form id="configForm">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Key</label>
+                    <input type="text" name="Key" class="key" placeholder="Enter Name" />
+                </div>
+                <div class="form-group">
+                    <label>Value</label>
+                    <input type="text" name="Value" class="form-control" placeholder="Enter Link Or Some Text" />
+                </div>
+
+                <button type="button" id="SaveBtn" class="btn btn-primary save-btn">Save</button>
+                <button type="button" id="cancelbtn" class="btn btn-primary cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    // Save Button
+    jQuery(document).ready(function () {
+        jQuery(".save-btn").on("click",
+            function() {
+                jQuery.ajax({
+                        type: 'POST',
+                        url: '/Configuration/Create',
+                        data: jQuery("#configForm").serialize()
+                    })
+                    .done(function (response) {
+                        jQuery(".configTable").html(response);
+                        alert("Done");
+
+                    })
+                    .fail(function () {
+                        alert("Fail");
+                    });
+            });
+    });
+
+    // Cancel Button
+    jQuery(".cancel-btn").on("click",
+        function () {
+            jQuery(".newContainer").html("");
+
+        });
+</script>

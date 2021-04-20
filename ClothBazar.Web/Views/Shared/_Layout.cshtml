@@ -1,6 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using ClothBazar.Services
+<!DOCTYPE html>
 <html>
 <head>
+    @{
+        ConfigurationsService configurationsService = new ConfigurationsService();
+    }
     <!-- Basic Page Needs -->
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
@@ -27,7 +31,7 @@
 
     <!-- Favicon and touch icons  -->
     <link href="favicon.ico" rel="shortcut icon">
-    
+
 
     <!--[if lt IE 9]>
         <script src="~/Content/javascript/html5shiv.js"></script>
@@ -171,12 +175,13 @@
                                     </div>
                                 </div>
                             </form>
+
                             <ul class="flat-social">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="@configurationsService.GetConfig("FacebookURL").Value"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google"></i></a></li>
+                                <li><a href="@configurationsService.GetConfig("Google").Value"><i class="fa fa-google"></i></a></li>
                                 <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="@configurationsService.GetConfig("LinkedIn").Value"><i class="fa fa-linkedin"></i></a></li>
                             </ul><!-- /.flat-social -->
                         </div><!-- /.subscribe -->
                     </div>
@@ -223,9 +228,9 @@
                                 <a href="index.html"><img src="~/Content/images/logo.png" alt="image" width="107" height="24"></a>
                             </div>
                             <ul class="flat-contact">
-                                <li class="address">112 Kingdom, NA 12, New York</li>
-                                <li class="phone">+12 345 678 910</li>
-                                <li class="email">infor.deercreative@gmail.com</li>
+                                <li class="address">@configurationsService.GetConfig("Address").Value</li>
+                                <li class="phone">@configurationsService.GetConfig("Phone").Value</li>
+                                <li class="email">@configurationsService.GetConfig("Email").Value</li>
                             </ul><!-- /.flat-contact -->
                         </div><!-- /.widget -->
                     </div><!-- /.col-md-3 -->
@@ -287,6 +292,7 @@
     <script src="~/Content/rev-slider/js/extensions/revolution.extension.parallax.min.js"></script>
     <script src="~/Content/rev-slider/js/extensions/revolution.extension.slideanims.min.js"></script>
     <script src="~/Content/rev-slider/js/extensions/revolution.extension.video.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @Scripts.Render("~/bundles/bootstrap")
    
     @RenderSection("scripts", required: false)

@@ -19,7 +19,7 @@
             <tr>
                 <td>@category.Name</td>
                 <td>
-               @*     @category.Products.Count*@
+                    @category.Products.Count
                 </td>
                 <td class="wrap-td">
                     <button class="edit-new-btn" data-id="@category.ID">Edit</button>
@@ -31,9 +31,44 @@
     </tbody>
 </table>
 
-@section scripts
-{
-    <script>
-        
-    </script>
-}
+
+<script>
+    jQuery(".deleteBtn").on("click", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                jQuery.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Delete", "Category")',
+                        data: {
+                            ID: jQuery(this).attr('data-id')
+                        }
+                    })
+                    .done(function (response) {
+                        jQuery("#tableContainer").html(response);
+
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+
+            }
+        });
+
+    });
+</script>
+

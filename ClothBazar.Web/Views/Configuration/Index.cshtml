@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="flat-row flat-iconbox">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section">
+                    <h2 class="title">
+                        Configurations
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary config-new-btn">New</button>
+        <div class="configTable">
+            @{
+                Html.RenderAction("ConfigTable");
+            }
+        </div>
+        <div class="newContainer" style="display: none">
+            @{
+                Html.RenderAction("Create");
+            }
+        </div>
+        <div class="config-editContainer">
+
+        </div>
+    </div>
+</section>
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery(".config-new-btn").on("click",
+            function() {
+                jQuery(".newContainer").toggle();
+            });
+    });
+
+    //focus
+    function focusAction(controlToFocus) {
+        jQuery('html, body').animate({
+                scrollTop: jQuery("#" + controlToFocus).offset().top - 100
+            },
+            1000);
+    }
+</script>
