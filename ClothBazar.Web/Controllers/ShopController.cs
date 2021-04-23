@@ -10,7 +10,7 @@ namespace ClothBazar.Web.Controllers
 {
     public class ShopController : Controller
     {
-        private ProductsService productsService = new ProductsService();
+       // private ProductsService productsService = new ProductsService();
         // GET: Shop
         public ActionResult Checkout()
         {
@@ -19,7 +19,7 @@ namespace ClothBazar.Web.Controllers
             if (cartProducts != null)
             {
                 model.CartProductIDs = cartProducts.Value.Split('-').Select(x => int.Parse(x)).ToList();
-                model.CartProducts = productsService.GetProducts(model.CartProductIDs);
+                model.CartProducts = ProductsService.Instance.GetProducts(model.CartProductIDs);
             }
             return View(model);
         }

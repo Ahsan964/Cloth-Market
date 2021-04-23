@@ -1,4 +1,6 @@
-﻿@model List<Config>
+﻿@*@model List<Config>*@
+
+@model ClothBazar.Web.ViewModels.ConfigViewModel
 @{
     ViewBag.Title = "ConfigTable";
 }
@@ -13,7 +15,7 @@
         </thead>
         <tbody>
         
-            @foreach (var config in Model)
+            @foreach (var config in Model.Configs)
             {
                 <tr>
                     <td>@config.Key</td>
@@ -27,7 +29,46 @@
         </tbody>
     </table>
 
+<div>
+    @if (Model.Pager != null)
+    {
+        if (Model.Pager.CurrentPage > 1)
+        {
+            <button type="button" data-page="1" class="pageBtn">First</button>
+            <button type="button" data-page="@(Model.Pager.CurrentPage - 1)" class="pageBtn">Previous</button>
+        }
+
+        for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+            <button type="button" data-page="@page" class="@activeClass pageBtn">@page</button>
+        }
+
+        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <button type="button" data-page="@(Model.Pager.CurrentPage + 1)" class="pageBtn">Next</button>
+            <button type="button" data-page="@Model.Pager.EndPage" class="pageBtn">Last</button>
+        }
+    }
+</div>
+
 <script>
+    // Pagination
+    jQuery(".pageBtn").on("click",
+        function() {
+            jQuery.ajax({
+                type: 'POST',
+                url: '/Configuration/ConfigTable',
+                data: {
+                    pageNo: jQuery(this).attr('data-page')
+                }
+            }).done(function(response) {
+                jQuery(".configTable").html(response);
+            }).fail(function() {
+                alert("Fail");
+            });
+
+        });
     jQuery(document).ready(function() {
         jQuery(".config-delete-btn").on("click", function (e) {
             e.preventDefault();
@@ -47,43 +88,42 @@
                             data: {
                                 Key: jQuery(this).attr('data-id')
                             }
-                        })
-                        .done(function (response) {
-                            jQuery(".configTable").html(response);
+                    }).done(function(response) {
+                        jQuery(".configTable").html(response);
 
-                            Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
-                                'success'
-                            )
+                        Swal.fire('Deleted!',
+                            'Your file has been deleted.',
+                            'success')
 
-                        })
-                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert("FAIL");
-                        });
+                    }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
 
                 }
             });
         });
 
+
         //Edit
         jQuery('.config-edit-btn').on('click',
-            function (e) {
+            function(e) {
                 e.preventDefault();
                 jQuery.ajax({
                     url: '/Configuration/Edit',
                     data: {
                         Key: jQuery(this).attr('data-id')
                     },
-                    beforeSend: function (xhr) { },
-                    success: function (response, statusText, xhr) {
+                    beforeSend: function(xhr) {},
+                    success: function(response, statusText, xhr) {
                         // console.log(xhr, response, statusText);
                         jQuery(".config-editContainer").html(response);
                         focusAction("config-editContainer");
                     },
-                    complete: function (xhr, response, statusText) { },
-                    error: function (xhr, errors) { }
+                    complete: function(xhr, response, statusText) {},
+                    error: function(xhr, errors) {}
                 });
             });
+
+      
     });
 </script>

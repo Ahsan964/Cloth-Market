@@ -14,6 +14,7 @@ namespace ClothBazar.Web.ViewModels
         public List<Category> Categories { get; set; }
         public Category Category { get; set; }
         public string SearchTerm { get; set; }
+        public Pager Pager { get; set; }
 
     }
 

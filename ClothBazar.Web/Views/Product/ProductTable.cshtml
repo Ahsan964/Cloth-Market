@@ -1,5 +1,5 @@
 ﻿
-@model List<Product>
+@model ClothBazar.Web.ViewModels.ProductSearchViewModel
 @{
     ViewBag.Title = "ProductTable";
 }
@@ -16,42 +16,83 @@
         </thead>
 
         <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Name</td>
-                <td>
-                    @if (product.Category != null)
-                    {
-                        <text>@product.Category.Name</text>
-                    }
-                    else
-                    {
-                        <text>-</text>
-                    }
-                </td>
-                <td>@product.Price</td>
-                <td class="wrap-td">
-                    <button type="button" id="editBtn" class="edit-new-btn" data-id="@product.ID">Edit</button>
-                    <button type="button" id="deleteBtn" class="delete-btn" data-id="@product.ID">Delete</button>
-                    <button type="button" id="addtocartBtn" class="addtocart-btn" data-id="@product.ID">Add To Cart</button>
-                </td>
-            </tr>
-        }
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>
+                        @if (product.Category != null)
+                        {
+                            <text>@product.Category.Name</text>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+                    <td>@product.Price</td>
+                    <td class="wrap-td">
+                        <button type="button" id="editBtn" class="edit-new-btn" data-id="@product.ID">Edit</button>
+                        <button type="button" id="deleteBtn" class="delete-btn" data-id="@product.ID">Delete</button>
+                        <button type="button" id="addtocartBtn" class="addtocart-btn" data-id="@product.ID">Add To Cart</button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-</div>
+    <div>
+        @if (Model.Pager != null)
+        {
+            if (Model.Pager.CurrentPage > 1)
+            {
+                <button type="button" data-page="1" class="pageBtn">First</button>
+                <button type="button" data-page="@(Model.Pager.CurrentPage - 1)" class="pageBtn">Previous</button>
+            }
+
+            for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+            {
+                string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+                <button type="button" data-page="@page" class="@activeClass pageBtn">@page</button>
+            }
+
+            if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+            {
+                <button type="button" data-page="@(Model.Pager.CurrentPage + 1)" class="pageBtn">Next</button>
+                <button type="button" data-page="@Model.Pager.EndPage" class="pageBtn">Last</button>
+            }
+        }
+    </div>
+
+    </div>
 
 
-<script>
-    jQuery(document).ready(function () {
-        var products = [];
-        jQuery(".addtocart-btn").on("click",
-            function () {
-                var productID = jQuery(this).attr('data-id');
-                products.push(productID);
-                jQuery.cookie("CartProducts", products.join('-'), { path: '/' });
-                alert("Added");
-            });
-    });
-</script>
+    <script>
+        jQuery(document).ready(function () {
+            var products = [];
+            jQuery(".addtocart-btn").on("click",
+                function () {
+                    var productID = jQuery(this).attr('data-id');
+                    products.push(productID);
+                    jQuery.cookie("CartProducts", products.join('-'), { path: '/' });
+                    alert("Added");
+                });
+
+            jQuery(".pageBtn").on("click",
+                function () {
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '/Product/ProductTable',
+                        data: {
+                            pageNo: jQuery(this).attr('data-page')
+                        }
+                    })
+                        .done(function (response) {
+                            jQuery(".ProductTable").html(response);
+                        })
+                        .fail(function () {
+                            alert("Fail");
+                        });
+
+                });
+        });
+    </script>

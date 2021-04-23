@@ -11,6 +11,27 @@ namespace ClothBazar.Services
 {
     public class ProductsService
     {
+        #region Singlton
+
+        public static ProductsService Instance
+        { 
+            get{
+                if (instance == null)
+                {
+                        instance = new ProductsService();
+                }
+
+                return instance;
+            }
+        }
+        private static ProductsService instance { get; set; }
+
+        private ProductsService()
+        {
+            
+        }
+        #endregion
+
         public void SaveProduct(Product product)
         {
             using (var context = new CBContext())
@@ -21,14 +42,54 @@ namespace ClothBazar.Services
             }
         }
 
-        //All Products
-        public List<Product> GetProducts()
+        // Products Count
+        public int GetProductsCount(string search)
         {
             using (var context = new CBContext())
             {
-                return context.Products.Include(c => c.Category).ToList();
+                if (string.IsNullOrEmpty(search) == false)
+                {
+                    return context.Products.Where(p => p.Name != null && p.Name.ToLower().Contains(search.ToLower()))
+                        .Count();
+                }
+                else
+                {
+                    return context.Products.Count();
+                }
+
             }
         }
+
+        //All Products
+        public List<Product> GetProducts(string search, int pageNo)
+        {
+            int pageSize = int.Parse(ConfigurationsService.Instance.GetConfig("PageSize").Value);
+
+            using (var context = new CBContext())
+            {
+                if (string.IsNullOrEmpty(search) == false)
+                {
+                     return context.Products.Where(p => p.Name != null && p.Name.ToLower().
+                             Contains(search.ToLower())).
+                         OrderBy(c => c.ID).
+                         Skip((pageNo - 1) * pageSize).
+                         Take(pageSize).
+                         Include(c => c.Category).
+                         ToList();
+                }
+                else
+                {
+                    return context.Products.
+                        OrderBy(c => c.ID).
+                        Skip((pageNo - 1) * pageSize).
+                        Take(pageSize).
+                        Include(c => c.Category).
+                        ToList();
+                }
+            }
+
+        }
+    
 
         // All Cart Products
         public List<Product> GetProducts(List<int> IDs)
@@ -68,3 +129,4 @@ namespace ClothBazar.Services
         }
     }
 }
+

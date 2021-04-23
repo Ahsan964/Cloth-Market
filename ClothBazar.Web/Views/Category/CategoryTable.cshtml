@@ -5,34 +5,74 @@
 
 <table id="categoryTable" class="table table-striped table-bordered" style="width:100%">
     <thead>
-    <tr>
-        <th class="font-weight-bold">Category Name</th>
-        <th class="font-weight-bold">Products</th>
-        <th class="font-weight-bold">Actions</th>
-    </tr>
+        <tr>
+            <th class="font-weight-bold">Category Name</th>
+            <th class="font-weight-bold">Products</th>
+            <th class="font-weight-bold">Actions</th>
+        </tr>
     </thead>
     <tbody>
-    @if (Model.Categories != null && Model.Categories.Count > 0)
+        @if (Model.Categories != null && Model.Categories.Count > 0)
     {
         foreach (var category in Model.Categories)
         {
-            <tr>
-                <td>@category.Name</td>
-                <td>
-                    @category.Products.Count
-                </td>
-                <td class="wrap-td">
-                    <button class="edit-new-btn" data-id="@category.ID">Edit</button>
-                    <button class="deleteBtn" data-id="@category.ID">Delete</button>
-                </td>
-            </tr>
+        <tr>
+            <td>@category.Name</td>
+            <td>
+                @category.Products.Count
+            </td>
+            <td class="wrap-td">
+                <button class="edit-new-btn" data-id="@category.ID">Edit</button>
+                <button class="deleteBtn" data-id="@category.ID">Delete</button>
+            </td>
+        </tr>
         }
     }
     </tbody>
 </table>
+<div>
+    @if (Model.Pager != null)
+    {
+        if (Model.Pager.CurrentPage > 1)
+        {
+            <button type="button" data-page="1" class="pageBtn">First</button>
+            <button type="button" data-page="@(Model.Pager.CurrentPage - 1)" class="pageBtn">Previous</button>
+        }
 
+        for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+                <button type="button" data-page="@page" class="@activeClass pageBtn">@page</button>
+        }
+
+        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <button type="button" data-page="@(Model.Pager.CurrentPage + 1)" class="pageBtn">Next</button>
+            <button type="button" data-page="@Model.Pager.EndPage" class="pageBtn">Last</button>
+        }
+    }
+</div>
 
 <script>
+    // Pagination 
+    jQuery(".pageBtn").on("click",
+        function () {
+            jQuery.ajax({
+                    type: 'POST',
+                    url: '/Category/CategoryTable',
+                    data: {
+                        pageNo: jQuery(this).attr('data-page')
+                    }
+                })
+                .done(function (response) {
+                    jQuery(".tableContainer").html(response);
+                })
+                .fail(function () {
+                    alert("Fail");
+                });
+        });
+
+    // Delete Button
     jQuery(".deleteBtn").on("click", function (e) {
         e.preventDefault();
         Swal.fire({

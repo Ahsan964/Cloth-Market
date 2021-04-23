@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Antlr.Runtime.Misc;
 using ClothBazar.Entities;
 using ClothBazar.Services;
+using ClothBazar.Web.ViewModels;
 
 namespace ClothBazar.Web.Controllers
 {
     public class ConfigurationController : Controller
     {
-        ConfigurationsService ConfigurationsService = new ConfigurationsService();
+       // ConfigurationsService ConfigurationsService = new ConfigurationsService();
         
         // GET: Configuration
         public ActionResult Index()
@@ -19,10 +21,24 @@ namespace ClothBazar.Web.Controllers
         }
 
         // Configuration Table Data
-        public ActionResult ConfigTable()
+        public ActionResult ConfigTable(int? pageNo)
         {
-            var configs = ConfigurationsService.GetConfigs();
-            return PartialView(configs);
+            ConfigViewModel model = new ConfigViewModel();
+
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
+            model.Configs = ConfigurationsService.Instance.GetConfigs(pageNo.Value);
+            var totalRecords = ConfigurationsService.Instance.GetConfigsCount();
+
+            if (model.Configs != null)
+            {
+                model.Pager = new Pager(totalRecords, pageNo, int.Parse(ConfigurationsService.Instance.GetConfig("PageSize").Value));
+                return PartialView("ConfigTable", model);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+            
         }
 
         // Create Configuration
@@ -35,7 +51,7 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Create(Config config)
         {
-            ConfigurationsService.SaveConfig(config);
+            ConfigurationsService.Instance.SaveConfig(config);
             return RedirectToAction("ConfigTable");
         }
 
@@ -43,14 +59,14 @@ namespace ClothBazar.Web.Controllers
         [HttpGet]
         public ActionResult Edit(string Key)
         {
-            var config = ConfigurationsService.GetConfig(Key);
+            var config = ConfigurationsService.Instance.GetConfig(Key);
             return PartialView(config);
         }
 
         [HttpPost]
         public ActionResult Edit(Config config)
         {
-            ConfigurationsService.UpdateConfig(config);
+            ConfigurationsService.Instance.UpdateConfig(config);
             return RedirectToAction("ConfigTable");
         }
 
@@ -58,7 +74,7 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Delete(string Key)
         {
-            ConfigurationsService.DeleteConfig(Key);
+            ConfigurationsService.Instance.DeleteConfig(Key);
             return RedirectToAction("ConfigTable");
         }
     }

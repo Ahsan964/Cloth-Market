@@ -11,11 +11,46 @@ namespace ClothBazar.Services
 {
     public class ConfigurationsService
     {
-        public List<Config> GetConfigs()
+        #region Singleton
+
+        public static ConfigurationsService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ConfigurationsService();
+                }
+
+                return instance;
+            }
+        }
+        private static ConfigurationsService instance { get; set; }
+
+        private ConfigurationsService()
+        {
+
+        }
+        #endregion
+
+        public List<Config> GetConfigs(int pageNo)
+        {
+            int pageSize = int.Parse(ConfigurationsService.Instance.GetConfig("PageSize").Value);
+            using (var context = new CBContext())
+            {
+                
+                return context.Configurations.OrderBy(c => c.Key)
+                    .Skip((pageNo - 1) * pageSize)
+                    .Take(pageSize)                
+                    .ToList();
+            }
+        }
+
+        public int GetConfigsCount()
         {
             using (var context = new CBContext())
             {
-                return context.Configurations.ToList();
+                return context.Configurations.Count();
             }
         }
 
