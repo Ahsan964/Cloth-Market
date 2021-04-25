@@ -11,8 +11,8 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label>Value</label>
-                    <input type="text" name="Value" class="form-control" value="@Model.Value" />
+                    <label>Value <span class="text-danger">*</span></label>
+                    <input type="text" name="Value" class="form-control" value="@Model.Value" required/>
                 </div>
             </div>
         </div>
@@ -23,10 +23,12 @@
 </div>
 
 <script>
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
+      
         //Update button
         $(".config-update-btn").on("click",
             function () {
+                if (jQuery("#configForm").valid != false) {
                 $.ajax({
                         type: 'POST',
                         url: '@Url.Action("Edit", "Configuration")',
@@ -35,12 +37,16 @@
                     .done(function (response) {
                         $(".configTable").html(response);
                         $(".config-editContainer").html("");
-                        focusAction("configTable");
+                        focusAction("ConfigTable");
 
                     })
                     .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("FAIL");
                     });
+                }
+                else {
+                    alert("Invalid");
+                }
             });
     });
 
@@ -48,6 +54,6 @@
     jQuery(".config-cancel-btn").on("click",
         function () {
             jQuery(".config-editContainer").html("");
-
+            focusAction("ConfigTable");
         });
 </script>

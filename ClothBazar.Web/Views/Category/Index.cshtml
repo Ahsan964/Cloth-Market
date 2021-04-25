@@ -1,7 +1,10 @@
-﻿@model List<ClothBazar.Entities.Category>
+﻿
 @{
     ViewBag.Title = "Index";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
 <section class="flat-row flat-iconbox">
     <div class="container">
         <div class="row">
@@ -41,18 +44,20 @@
             
         </div>
 
-        <div class="tableContainer">
+        <div id="tableContainer" class="tableContainer">
             @{
                 Html.RenderAction("CategoryTable");
             }
         </div>
-
+        
+        <hr/>
         <div id="createContainer" class="createContainer" style="display: none">
             @{
                 Html.RenderAction("Create");
             }
         </div>
-
+        
+        <hr/>
         <div id="editContainer" class="editContainer">
             @*@{
                     Html.RenderAction("Edit");
@@ -75,29 +80,7 @@
             });
             
 
-            //Edit Button
-            jQuery(document).ready(function () {
-                jQuery('.edit-new-btn').on('click',
-                    function (e) {
-                        e.preventDefault();
-                        jQuery.ajax({
-                            url: '/Category/Edit',
-                            data: {
-                                ID: jQuery(this).attr('data-id')
-                            },
-                            beforeSend: function (xhr) { },
-                            success: function (response, statusText, xhr) {
-                                // console.log(xhr, response, statusText);
-                                jQuery("#editContainer").html(response);
-                                focusAction("editContainer");
-                            },
-                            complete: function (xhr, response, statusText) { },
-                            error: function (xhr, errors) { }
-                        });
-
-
-                    });
-            });
+           
 
             //search
             jQuery(document).ready(function () {

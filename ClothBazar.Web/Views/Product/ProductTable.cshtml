@@ -66,33 +66,100 @@
     </div>
 
 
-    <script>
-        jQuery(document).ready(function () {
-            var products = [];
-            jQuery(".addtocart-btn").on("click",
-                function () {
-                    var productID = jQuery(this).attr('data-id');
-                    products.push(productID);
-                    jQuery.cookie("CartProducts", products.join('-'), { path: '/' });
-                    alert("Added");
+<script>
+    // Edit Button
+    jQuery(document).ready(function () {
+        jQuery('.edit-new-btn').on('click',
+            function (e) {
+                e.preventDefault();
+
+                jQuery.ajax({
+                    url: '/Product/Edit',
+                    data: {
+                        ID: jQuery(this).attr('data-id')
+                    },
+                    beforeSend: function (xhr) { },
+                    success: function (response, statusText, xhr) {
+                        // console.log(xhr, response, statusText);
+                        jQuery("#editContainer").html(response);
+                        focusAction("editContainer");
+                    },
+                    complete: function (xhr, response, statusText) { },
+                    error: function (xhr, errors) { alert("fail"); }
                 });
 
-            jQuery(".pageBtn").on("click",
-                function () {
-                    jQuery.ajax({
+
+            });
+    });
+
+    // Delete Button
+    jQuery(document).ready(function () {
+        jQuery('.delete-btn').on('click',
+            function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '/Product/Delete',
+                            data: {
+                                ID: jQuery(this).attr('data-id')
+                            },
+                            beforeSend: function (xhr) { },
+                            success: function (response, statusText, xhr) {
+                                // console.log(xhr, response, statusText);
+                                jQuery(".ProductTable").html(response);
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                )
+                            },
+                            complete: function (xhr, response, statusText) { },
+                            error: function (xhr, errors) { }
+                        });
+
+                    }
+                });
+            });
+    });
+
+    // Add To Cart
+    jQuery(document).ready(function () {
+        var products = [];
+        jQuery(".addtocart-btn").on("click",
+            function () {
+                var productID = jQuery(this).attr('data-id');
+                products.push(productID);
+                jQuery.cookie("CartProducts", products.join('-'), { path: '/' });
+                alert("Added");
+            });
+
+        jQuery(".pageBtn").on("click",
+            function () {
+                jQuery.ajax({
                         type: 'POST',
                         url: '/Product/ProductTable',
                         data: {
                             pageNo: jQuery(this).attr('data-page')
+                            
                         }
                     })
-                        .done(function (response) {
-                            jQuery(".ProductTable").html(response);
-                        })
-                        .fail(function () {
-                            alert("Fail");
-                        });
+                    .done(function (response) {
+                        jQuery(".ProductTable").html(response);
+                    })
+                    .fail(function () {
+                        alert("Fail");
+                    });
 
-                });
-        });
-    </script>
+            });
+    });
+</script>

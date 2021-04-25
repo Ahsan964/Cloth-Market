@@ -27,8 +27,11 @@ namespace ClothBazar.Web.ViewModels
         [MaxLength(500)]
         public string Description { get; set; }
 
+        [Display(Name = "Image")]
         public string ImageURL { get; set; }
 
+    
+        [Display(Name = "Is Featured?")]
         public bool isFeatured { get; set; }
     }
 
@@ -36,11 +39,17 @@ namespace ClothBazar.Web.ViewModels
     {
         public int ID { get; set; }
 
+        [Required]
+        [MinLength(5), MaxLength(50)]
         public string Name { get; set; }
+
+        [MaxLength(500)]
         public string Description { get; set; }
 
+        [Display(Name = "Image")]
         public string ImageURL { get; set; }
 
+        [Display(Name = "Is Featured?")]
         public bool isFeatured { get; set; }
     }
 }

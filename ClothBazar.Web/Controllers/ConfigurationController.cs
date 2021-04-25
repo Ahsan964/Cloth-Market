@@ -51,8 +51,16 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Create(Config config)
         {
-            ConfigurationsService.Instance.SaveConfig(config);
-            return RedirectToAction("ConfigTable");
+            if (ModelState.IsValid)
+            {
+                ConfigurationsService.Instance.SaveConfig(config);
+                return RedirectToAction("ConfigTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
+
         }
 
         //Edit & Update
@@ -66,8 +74,15 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Config config)
         {
-            ConfigurationsService.Instance.UpdateConfig(config);
-            return RedirectToAction("ConfigTable");
+            if (ModelState.IsValid)
+            {
+                ConfigurationsService.Instance.UpdateConfig(config);
+                return RedirectToAction("ConfigTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
 
         // Delete

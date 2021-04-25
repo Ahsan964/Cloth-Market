@@ -31,6 +31,7 @@ namespace ClothBazar.Web.Controllers
         public ActionResult ProductTable(string search, int? pageNo)
         {
             ProductSearchViewModel model = new ProductSearchViewModel();
+            
 
             pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value :1 : 1;
             model.Products = ProductsService.Instance.GetProducts(search, pageNo.Value);
@@ -61,15 +62,22 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Create(NewProductViewModel model)
         {
-            var newProduct = new Product();
-            newProduct.Name = model.Name;
-            newProduct.Description = model.Description;
-            newProduct.Price = model.Price;
-            newProduct.ImageURL = model.ImageURL;
-            newProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryID);
+            if (ModelState.IsValid)
+            {
+                var newProduct = new Product();
+                newProduct.Name = model.Name;
+                newProduct.Description = model.Description;
+                newProduct.Price = model.Price;
+                newProduct.ImageURL = model.ImageURL;
+                newProduct.Category = CategoriesService.Instance.GetCategory(model.CategoryID);
 
-            ProductsService.Instance.SaveProduct(newProduct);
-            return RedirectToAction("ProductTable");
+                ProductsService.Instance.SaveProduct(newProduct);
+                return RedirectToAction("ProductTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
         #endregion
 
@@ -97,23 +105,30 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Edit(EditProductViewModel model)
         {
-            var existingProduct = ProductsService.Instance.GetProduct(model.ID);
-            existingProduct.Name = model.Name;
-            existingProduct.Description = model.Description;
-            existingProduct.Price = model.Price;
-
-            existingProduct.Category = null; //mark it null. Because the referncy key is changed below
-            existingProduct.CategoryID = model.CategoryID;
-
-            //dont update imageURL if its empty
-            if (!string.IsNullOrEmpty(model.ImageURL))
+            if (ModelState.IsValid)
             {
-                existingProduct.ImageURL = model.ImageURL;
+                var existingProduct = ProductsService.Instance.GetProduct(model.ID);
+                existingProduct.Name = model.Name;
+                existingProduct.Description = model.Description;
+                existingProduct.Price = model.Price;
+
+                existingProduct.Category = null; //mark it null. Because the referncy key is changed below
+                existingProduct.CategoryID = model.CategoryID;
+
+                //dont update imageURL if its empty
+                if (!string.IsNullOrEmpty(model.ImageURL))
+                {
+                    existingProduct.ImageURL = model.ImageURL;
+                }
+
+                ProductsService.Instance.UpdateProduct(existingProduct);
+
+                return RedirectToAction("ProductTable");
             }
-
-            ProductsService.Instance.UpdateProduct(existingProduct);
-
-            return RedirectToAction("ProductTable");
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
         #endregion
 

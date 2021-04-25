@@ -13,8 +13,8 @@
                     <input type="text" name="Key" class="key" placeholder="Enter Name" />
                 </div>
                 <div class="form-group">
-                    <label>Value</label>
-                    <input type="text" name="Value" class="form-control" placeholder="Enter Link Or Some Text" />
+                    <label>Value <span class="text-danger">*</span></label>
+                    <input type="text" name="Value" class="form-control" placeholder="Enter Link Or Some Text" required/>
                 </div>
 
                 <button type="button" id="SaveBtn" class="btn btn-primary save-btn">Save</button>
@@ -26,10 +26,24 @@
 </div>
 
 <script>
+    // Validate
+    jQuery('#configForm').validate({
+        rules: {
+            Value: {
+                required: true
+            }
+        },
+        messages: {
+            Value: {
+                required: "Value Is Required"
+            }
+        }
+    });
     // Save Button
     jQuery(document).ready(function () {
         jQuery(".save-btn").on("click",
-            function() {
+            function () {
+                if (jQuery("#createCategory").valid != false) {
                 jQuery.ajax({
                         type: 'POST',
                         url: '/Configuration/Create',
@@ -37,12 +51,15 @@
                     })
                     .done(function (response) {
                         jQuery(".configTable").html(response);
-                        alert("Done");
-
+                        focusAction("ConfigTable");
                     })
                     .fail(function () {
                         alert("Fail");
                     });
+                }
+                else {
+                    alert("Invalid");
+                }
             });
     });
 
@@ -50,6 +67,6 @@
     jQuery(".cancel-btn").on("click",
         function () {
             jQuery(".newContainer").html("");
-
+            focusAction("ConfigTable");
         });
 </script>

@@ -3,33 +3,36 @@
     ViewBag.Title = "CategoryTable";
 }
 
-<table id="categoryTable" class="table table-striped table-bordered" style="width:100%">
-    <thead>
-        <tr>
-            <th class="font-weight-bold">Category Name</th>
-            <th class="font-weight-bold">Products</th>
-            <th class="font-weight-bold">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Categories != null && Model.Categories.Count > 0)
-    {
-        foreach (var category in Model.Categories)
-        {
-        <tr>
-            <td>@category.Name</td>
-            <td>
-                @category.Products.Count
-            </td>
-            <td class="wrap-td">
-                <button class="edit-new-btn" data-id="@category.ID">Edit</button>
-                <button class="deleteBtn" data-id="@category.ID">Delete</button>
-            </td>
-        </tr>
-        }
-    }
-    </tbody>
-</table>
+<div>
+    <table id="categoryTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="font-weight-bold">Category Name</th>
+                <th class="font-weight-bold">Products</th>
+                <th class="font-weight-bold">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Categories != null && Model.Categories.Count > 0)
+            {
+                foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>
+                            @category.Products.Count
+                        </td>
+                        <td class="wrap-td">
+                            <button class="edit-new-btn" data-id="@category.ID">Edit</button>
+                            <button class="deleteBtn" data-id="@category.ID">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
 <div>
     @if (Model.Pager != null)
     {
@@ -53,7 +56,32 @@
     }
 </div>
 
+
 <script>
+
+    //Edit Button
+    jQuery(document).ready(function () {
+        jQuery('.edit-new-btn').on('click',
+            function (e) {
+                jQuery.ajax({
+                    url: '/Category/Edit',
+                    data: {
+                        ID: jQuery(this).attr('data-id')
+                    },
+                    beforeSend: function (xhr) { },
+                    success: function (response, statusText, xhr) {
+                        // console.log(xhr, response, statusText);
+                        jQuery("#editContainer").html(response);
+                        focusAction("editContainer");
+                    },
+                    complete: function (xhr, response, statusText) { },
+                    error: function (xhr, errors) { alert("Fail");}
+                });
+
+
+            });
+    });
+
     // Pagination 
     jQuery(".pageBtn").on("click",
         function () {
@@ -61,7 +89,8 @@
                     type: 'POST',
                     url: '/Category/CategoryTable',
                     data: {
-                        pageNo: jQuery(this).attr('data-page')
+                        pageNo: jQuery(this).attr('data-page'),
+                        search: '@Model.SearchTerm'
                     }
                 })
                 .done(function (response) {
@@ -72,9 +101,10 @@
                 });
         });
 
+
     // Delete Button
     jQuery(".deleteBtn").on("click", function (e) {
-        e.preventDefault();
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -92,14 +122,14 @@
                             ID: jQuery(this).attr('data-id')
                         }
                     })
-                    .done(function (response) {
-                        jQuery("#tableContainer").html(response);
+                    .done(function(response) {
+                        jQuery(".tableContainer").html(response);
 
                         Swal.fire(
                             'Deleted!',
                             'Your file has been deleted.',
                             'success'
-                        )
+                        );
 
                     })
                     .fail(function (XMLHttpRequest, textStatus, errorThrown) {

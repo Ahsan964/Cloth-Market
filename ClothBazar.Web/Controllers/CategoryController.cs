@@ -3,6 +3,7 @@ using ClothBazar.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ClothBazar.Web.ViewModels;
@@ -55,22 +56,30 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Create(NewCategoryViewModel model)
         {
-            var newCategory = new Category();
-            newCategory.Name = model.Name;
-            newCategory.Description = model.Description;
-            newCategory.ImageURL = model.ImageURL;
-            newCategory.IsFeatured = model.isFeatured;
+            if (ModelState.IsValid)
+            {
+                var newCategory = new Category();
+                newCategory.Name = model.Name;
+                newCategory.Description = model.Description;
+                newCategory.ImageURL = model.ImageURL;
+                newCategory.IsFeatured = model.isFeatured;
 
 
-            CategoriesService.Instance.SaveCategory(newCategory);
+                CategoriesService.Instance.SaveCategory(newCategory);
 
-            return RedirectToAction("CategoryTable");
+                return RedirectToAction("CategoryTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
 
         }
 
         [HttpGet]
         public ActionResult Edit(int ID)
         {
+
             EditCategoryViewModel model = new EditCategoryViewModel();
             var category = CategoriesService.Instance.GetCategory(ID);
             model.ID = category.ID;
@@ -85,15 +94,23 @@ namespace ClothBazar.Web.Controllers
         [HttpPost]
         public ActionResult Edit(EditCategoryViewModel model)
         {
-            var existingCategory = CategoriesService.Instance.GetCategory(model.ID);
-            existingCategory.ID = model.ID;
-            existingCategory.Name = model.Name;
-            existingCategory.Description = model.Description;
-            existingCategory.ImageURL = model.ImageURL;
-            existingCategory.IsFeatured = model.isFeatured;
+            if (ModelState.IsValid)
+            {
+                var existingCategory = CategoriesService.Instance.GetCategory(model.ID);
+                existingCategory.ID = model.ID;
+                existingCategory.Name = model.Name;
+                existingCategory.Description = model.Description;
+                existingCategory.ImageURL = model.ImageURL;
+                existingCategory.IsFeatured = model.isFeatured;
 
-            CategoriesService.Instance.UpdateCategory(existingCategory);
-            return RedirectToAction("CategoryTable");
+                CategoriesService.Instance.UpdateCategory(existingCategory);
+                return RedirectToAction("CategoryTable");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
+
         }
 
         [HttpGet]
@@ -107,7 +124,7 @@ namespace ClothBazar.Web.Controllers
         public ActionResult Delete(Category category)
         {
             CategoriesService.Instance.DeleteCategory(category.ID);
-            return RedirectToAction("Index");
+            return RedirectToAction("CategoryTable");
         }
     }
 }

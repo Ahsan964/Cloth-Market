@@ -17,3 +17,8 @@ C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Datab
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.AddedIsFeatured.resources
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.AddCategoryID.resources
 C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.ConfigurationTable.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.CategoryValidation.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.EditEntity.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.ValidConfig.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.ValidProducts.resources
+C:\Users\Ahsan\documents\visual studio 2015\Projects\ClothBazar\ClothBazar.Database\obj\Debug\ClothBazar.Database.Migrations.EditPriceValid.resources

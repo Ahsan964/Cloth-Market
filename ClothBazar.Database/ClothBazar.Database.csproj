@@ -76,6 +76,26 @@
     <Compile Include="Migrations\202104191819277_ConfigurationTable.Designer.cs">
       <DependentUpon>202104191819277_ConfigurationTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104241103064_CategoryValidation.cs" />
+    <Compile Include="Migrations\202104241103064_CategoryValidation.Designer.cs">
+      <DependentUpon>202104241103064_CategoryValidation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104241833349_EditEntity.cs" />
+    <Compile Include="Migrations\202104241833349_EditEntity.Designer.cs">
+      <DependentUpon>202104241833349_EditEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104251006454_ValidConfig.cs" />
+    <Compile Include="Migrations\202104251006454_ValidConfig.Designer.cs">
+      <DependentUpon>202104251006454_ValidConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104251101462_ValidProducts.cs" />
+    <Compile Include="Migrations\202104251101462_ValidProducts.Designer.cs">
+      <DependentUpon>202104251101462_ValidProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104251117013_EditPriceValid.cs" />
+    <Compile Include="Migrations\202104251117013_EditPriceValid.Designer.cs">
+      <DependentUpon>202104251117013_EditPriceValid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,6 +127,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104191819277_ConfigurationTable.resx">
       <DependentUpon>202104191819277_ConfigurationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104241103064_CategoryValidation.resx">
+      <DependentUpon>202104241103064_CategoryValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104241833349_EditEntity.resx">
+      <DependentUpon>202104241833349_EditEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104251006454_ValidConfig.resx">
+      <DependentUpon>202104251006454_ValidConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104251101462_ValidProducts.resx">
+      <DependentUpon>202104251101462_ValidProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104251117013_EditPriceValid.resx">
+      <DependentUpon>202104251117013_EditPriceValid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
 <section class="flat-row flat-iconbox">
     <div class="container">
         <div class="row">
@@ -40,34 +43,33 @@
                 </div>
                 </div>
             </form>
-            <div class="ProductTable">
+            <div id="productContainer" class="ProductTable">
             @{
                 Html.RenderAction("ProductTable");
             }
-        </div>
-
-
-        <div id="actionContainer" style="display: none">
+            </div>
+            
+            <hr/>
+            <div id="actionContainer" style="display: none">
             @{
                 Html.RenderAction("Create");
             }
-        </div>
-
-        <div id="editContainer">
-            @{
-            }
+            </div>
+            
+            <hr/>
+            <div id="editContainer">
+                @{
+                }
+            </div>
         </div>
     </div>
+
 </section>
 
 @section scripts
 {
         <script>
-            function focusAction(controlToFocus) {
-                $('html, body').animate({
-                    scrollTop: $("#" + controlToFocus).offset().top - 100
-                }, 1000);
-            }
+           
 
             jQuery(document).ready(function () {
 
@@ -125,7 +127,7 @@
 
 
                 jQuery("#saveBtn").click(function (e) {
-
+                    if (jQuery("#createCategory").valid != false) {
                     jQuery.ajax({
                         type: 'POST',
                         url: '/Product/Create',
@@ -139,6 +141,10 @@
                         .fail(function () {
                             alert("Fail");
                         });
+                    }
+                    else {
+                        alert("Invalid");
+                    }
                 });
 
             });
@@ -180,70 +186,15 @@
 
             });
 
-            jQuery(document).ready(function () {
-                jQuery('.edit-new-btn').on('click',
-                    function (e) {
-                        e.preventDefault();
+          
 
-                        jQuery.ajax({
-                            url: '/Product/Edit',
-                            data: {
-                                ID: jQuery(this).attr('data-id')
-                            },
-                            beforeSend: function (xhr) { },
-                            success: function (response, statusText, xhr) {
-                                // console.log(xhr, response, statusText);
-                                jQuery("#editContainer").html(response);
-                                focusAction("editContainer");
-                            },
-                            complete: function (xhr, response, statusText) { },
-                            error: function (xhr, errors) { alert("fail"); }
-                        });
-
-
-                    });
-            });
-
-            jQuery(document).ready(function () {
-                jQuery('.delete-btn').on('click',
-                    function (e) {
-                        e.preventDefault();
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, delete it!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                jQuery.ajax({
-                                    type: 'POST',
-                                    url: '/Product/Delete',
-                                    data: {
-                                        ID: jQuery(this).attr('data-id')
-                                    },
-                                    beforeSend: function(xhr) {},
-                                    success: function(response, statusText, xhr) {
-                                        // console.log(xhr, response, statusText);
-                                        jQuery(".ProductTable").html(response);
-                                        Swal.fire(
-                                            'Deleted!',
-                                            'Your file has been deleted.',
-                                            'success'
-                                        )
-                                    },
-                                    complete: function(xhr, response, statusText) {},
-                                    error: function(xhr, errors) {}
-                                });
-
-                            }
-                        });
-                    });
-            });
-
-
+          
+            // Focus Action
+            function focusAction(controlToFocus) {
+                $('html, body').animate({
+                    scrollTop: $("#" + controlToFocus).offset().top - 100
+                }, 1000);
+            }
         </script>
     }
 

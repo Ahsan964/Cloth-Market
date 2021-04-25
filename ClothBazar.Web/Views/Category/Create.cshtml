@@ -3,14 +3,13 @@
     ViewBag.Title = "Create";
     var imageURL = "/Content/images/pattern/placeholder.png";
 }
-
-<form id="createCategory">
+<form id="createCategory" class="crete-category">
     <h2>Create Category</h2>
     <div class="row">
         <div class="col-md-8">
             <div class="form-group">
                 <label>Name <span class="text-danger">*</span> </label>
-                <input class="form-control" name="Name"/>
+                <input class="form-control" name="Name" required/>
             </div>
 
             <div class="form-group">
@@ -44,67 +43,100 @@
         </div>
     </div>
 
-    <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
+    <button type="button" id="saveBtn" class="category-save-btn btn btn-primary">Save</button>
     <button id="cancelBtn" type="button" class="btn btn-primary">Cancel</button>
 </form>
 
-    <script>
-        jQuery(document).ready(function() {
-            jQuery("#imageUpload").change(function() {
-                var element = this;
+<script >
 
-                var formData = new FormData();
+    jQuery(document).ready(function() {
+        jQuery("#imageUpload").change(function() {
+            var element = this;
 
-                var totalFiles = element.files.length;
+            var formData = new FormData();
 
-                for (var i = 0; i < totalFiles; i++) {
-                    var file = element.files[i];
-                    formData.append("Photo", file);
-                }
+            var totalFiles = element.files.length;
 
-                jQuery.ajax({
-                        type: 'POST',
-                        url: '@Url.Action("UploadImage", "Shared")',
-                        dataType: 'json',
-                        data: formData,
-                        contentType: false,
-                        processData: false
-                    })
-                    .done(function(response) {
-                        console.log(response);
+            for (var i = 0; i < totalFiles; i++) {
+                var file = element.files[i];
+                formData.append("Photo", file);
+            }
 
-                        if (response.Success) {
-                            jQuery("#ImageURL").val(response.ImageURL);
-                            jQuery("#categoryImage").attr("src", response.ImageURL);
-                        }
-                    })
-                    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("FAIL");
-                    });
-            });
-
-        });
-
-        jQuery("#saveBtn").click(function (e) {
-            
             jQuery.ajax({
                     type: 'POST',
-                    url: '/Category/Create',
-                    data: jQuery("#createCategory").serialize()
+                    url: '@Url.Action("UploadImage", "Shared")',
+                    dataType: 'json',
+                    data: formData,
+                    contentType: false,
+                    processData: false
                 })
-                .done(function (response) {
-                    jQuery(".tableContainer").html(response);
+                .done(function(response) {
+                    console.log(response);
 
+                    if (response.Success) {
+                        jQuery("#ImageURL").val(response.ImageURL);
+                        jQuery("#categoryImage").attr("src", response.ImageURL);
+                    }
                 })
-                .fail(function () {
-                    alert("Fail");
+                .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
                 });
         });
 
-        //Cancel button
-        jQuery("#cancelBtn").on("click",
-            function () {
-                jQuery("#createContainer").html("");
+    });
 
-            });
-    </script>
+    // Validate
+    jQuery('#createCategory').validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            },
+            Description: {
+                maxlength: 500
+            }
+            
+        },
+        messages: {
+            Name: {
+                required: "Name Is Required",
+                minlength: "Minimum Length Is 5",
+                maxlength: "Maximum Length Is 50"
+            },
+            Description: {
+                maxlength: "Maximum Length Is 500"
+            }
+          
+        }
+    });
+
+    // Save Button
+    $("#saveBtn").click(function () {
+        
+        if (jQuery("#createCategory").valid != false) {
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Create", "Category")',
+                    data: $("#createCategory").serialize()
+                })
+                .done(function (response) {
+                    $(".tableContainer").html(response);
+                    //$("#actionContainer").html("");
+                    focusAction("tableContainer");
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Fail");
+                });
+        }
+        else {
+            alert("Invalid");
+            }
+    });
+    //Cancel button
+    jQuery("#cancelBtn").on("click",
+        function () {
+            jQuery("#createContainer").html("");
+            focusAction("tableContainer");
+        });
+</script>

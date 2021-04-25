@@ -20,7 +20,7 @@
                 <tr>
                     <td>@config.Key</td>
                     <td>@config.Value</td>
-                    <td>
+                    <td class="wrap-td">
                         <button type="button" data-id="@config.Key" class="config-edit-btn">Edit</button>
                         <button type="button" data-id="@config.Key" class="config-delete-btn">Delete</button>
                     </td>
@@ -117,7 +117,7 @@
                     success: function(response, statusText, xhr) {
                         // console.log(xhr, response, statusText);
                         jQuery(".config-editContainer").html(response);
-                        focusAction("config-editContainer");
+                        focusAction("config-edit");
                     },
                     complete: function(xhr, response, statusText) {},
                     error: function(xhr, errors) {}

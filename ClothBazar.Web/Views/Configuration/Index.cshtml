@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 
 <section class="flat-row flat-iconbox">
     <div class="container">
@@ -16,17 +17,19 @@
             </div>
         </div>
         <button type="button" class="btn btn-primary config-new-btn">New</button>
-        <div class="configTable">
+        <div class="configTable" id="ConfigTable">
             @{
                 Html.RenderAction("ConfigTable");
             }
         </div>
-        <div class="newContainer" style="display: none">
+        <hr/>
+        <div id="newContainer" class="newContainer" style="display: none">
             @{
                 Html.RenderAction("Create");
             }
         </div>
-        <div class="config-editContainer">
+        <hr/>
+        <div id="config-edit" class="config-editContainer">
 
         </div>
     </div>
@@ -37,6 +40,7 @@
         jQuery(".config-new-btn").on("click",
             function() {
                 jQuery(".newContainer").toggle();
+                focusAction("newContainer");
             });
     });
 
