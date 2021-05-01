@@ -203,6 +203,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
+    <Compile Include="Controllers\WidgetsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +215,7 @@
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\WidgetsViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SharedViewModel.cs" />
     <Compile Include="ViewModels\ShopViewModel.cs" />
@@ -469,6 +471,8 @@
     <Content Include="Views\Configuration\Index.cshtml" />
     <Content Include="Views\Configuration\ConfigTable.cshtml" />
     <Content Include="Views\Configuration\Edit.cshtml" />
+    <Content Include="Views\Widgets\Products.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

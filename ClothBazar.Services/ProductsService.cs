@@ -32,6 +32,7 @@ namespace ClothBazar.Services
         }
         #endregion
 
+        // Save Product
         public void SaveProduct(Product product)
         {
             using (var context = new CBContext())
@@ -60,7 +61,7 @@ namespace ClothBazar.Services
             }
         }
 
-        //All Products
+        //All Products Page Wise
         public List<Product> GetProducts(string search, int pageNo)
         {
             int pageSize = int.Parse(ConfigurationsService.Instance.GetConfig("PageSize").Value);
@@ -89,7 +90,50 @@ namespace ClothBazar.Services
             }
 
         }
-    
+
+        // Latest Products
+        public List<Product> GetLatestProducts(int numberOfProducts)
+        {
+            using (var context = new CBContext())
+            {
+              
+                    return context.Products.
+                        OrderByDescending(c => c.ID).
+                        Take(numberOfProducts).
+                        Include(c => c.Category).
+                        ToList();
+            }
+
+        }
+
+        // Related Products
+        // Products Of All Categories
+        public List<Product> GetRelatedProducts(int CategoryID, int pageSize)
+        {
+
+            using (var context = new CBContext())
+            {
+
+                return context.Products.Where(c => c.Category.ID == CategoryID).OrderByDescending(c => c.ID).Take(pageSize)
+                    .Include(c => c.Category).ToList();
+
+
+            }
+        }
+
+        // Products Of All Categories
+        public List<Product> GetProducts(int pageNo, int pageSize)
+        {
+
+            using (var context = new CBContext())
+            {
+
+                return context.Products.OrderByDescending(c => c.ID).Skip((pageNo - 1) * pageSize).Take(pageSize)
+                    .Include(c => c.Category).ToList();
+
+
+            }
+        }
 
         // All Cart Products
         public List<Product> GetProducts(List<int> IDs)
@@ -109,6 +153,7 @@ namespace ClothBazar.Services
             }
         }
 
+        // Update Product
         public void UpdateProduct(Product product)
         {
             using (var context = new CBContext())
@@ -118,6 +163,7 @@ namespace ClothBazar.Services
             }
         }
 
+        // Delete Product
         public void DeleteProduct(int ID)
         {
             using (var context = new CBContext())

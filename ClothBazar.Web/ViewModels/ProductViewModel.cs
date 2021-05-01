@@ -57,4 +57,10 @@ namespace ClothBazar.Web.ViewModels
 
         public List<Category> AvailableCategories { get; set; }
     }
+
+    // Details Product
+    public class ProductDetailsViewModel
+    {
+        public Product Product { get; set; }
+    }
 }
